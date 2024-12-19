@@ -1,10 +1,15 @@
+provider "aws" {
+  alias  = "us_east_2"
+  region = "us-east-2"
+}
+
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:*"]
     resources = ["${aws_s3_bucket.cloudfront_bucket.arn}/*", "${aws_s3_bucket.cloudfront_bucket.arn}"]
 
     principals {
-      type        = "AWS"
+      type        = "*"
       identifiers = [aws_cloudfront_origin_access_identity.cloudfront_origin_access_identity.iam_arn]
     }
   }
@@ -16,19 +21,37 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy" {
 }
 
 resource "aws_s3_bucket" "cloudfront_bucket" {
-  bucket = "test-matheus-cloudfront"
+  provider = aws.us_east_2
+  bucket   = "test-matheus-cloudfront"
+
   lifecycle {
-    ignore_changes = all
+    prevent_destroy = false
   }
 
   tags = {
     Name = "test-matheus-cloudfront"
   }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "aws s3 rm s3://${self.bucket} --recursive"
+  }
 }
 
+resource "aws_s3_object" "provision_source_files" {
+  bucket = aws_s3_bucket.cloudfront_bucket.id
+
+  for_each = fileset("dist/", "**/*.*")
+
+  key          = each.value
+  source       = "dist/${each.value}"
+  content_type = each.value
+  depends_on   = [aws_s3_bucket.cloudfront_bucket]
+}
 
 resource "aws_s3_bucket_public_access_block" "example" {
-  bucket = aws_s3_bucket.cloudfront_bucket.id
+  provider = aws.us_east_2
+  bucket   = aws_s3_bucket.cloudfront_bucket.id
 
   block_public_acls       = true
   block_public_policy     = false

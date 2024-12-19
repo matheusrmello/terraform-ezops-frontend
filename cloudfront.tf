@@ -1,9 +1,10 @@
+
 locals {
   s3_origin_id = "myS3Origin"
 }
 
 resource "aws_cloudfront_origin_access_control" "cloudfront_access_control" {
-  name                              = "cloudfront-access-control"
+  name                              = "ocn-access-control"
   description                       = "CloudFront access control for S3 origin"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
@@ -81,13 +82,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  # aliases = ["matheus.exam.ezopscloud.tech"]
-
   tags = {
     Name = "test-matheus-cloudfront"
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn            = aws_acm_certificate.acm_cert.arn
+    ssl_support_method             = "sni-only"
   }
 }
+
+
+
