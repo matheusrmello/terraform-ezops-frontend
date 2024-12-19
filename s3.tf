@@ -17,6 +17,9 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy" {
 
 resource "aws_s3_bucket" "cloudfront_bucket" {
   bucket = "test-matheus-cloudfront"
+  lifecycle {
+    prevent_destroy = true
+  }
 
   tags = {
     Name = "test-matheus-cloudfront"

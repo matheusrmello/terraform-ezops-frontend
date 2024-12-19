@@ -17,7 +17,6 @@ resource "aws_cloudfront_origin_access_identity" "cloudfront_origin_access_ident
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.cloudfront_bucket.bucket_regional_domain_name
-    # origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_access_control.id
     origin_id = local.s3_origin_id
 
     s3_origin_config {
@@ -81,6 +80,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       restriction_type = "none"
     }
   }
+
+  # aliases = ["matheus.exam.ezopscloud.tech"]
 
   tags = {
     Name = "test-matheus-cloudfront"
