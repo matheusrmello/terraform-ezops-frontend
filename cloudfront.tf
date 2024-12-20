@@ -18,7 +18,7 @@ resource "aws_cloudfront_origin_access_identity" "cloudfront_origin_access_ident
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.cloudfront_bucket.bucket_regional_domain_name
-    origin_id = local.s3_origin_id
+    origin_id   = local.s3_origin_id
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.cloudfront_origin_access_identity.cloudfront_access_identity_path
@@ -86,12 +86,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
 
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.acm_cert.arn
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "TLSv1"
+    acm_certificate_arn      = aws_acm_certificate.acm_cert.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1"
   }
 
-    tags = {
+  tags = {
     Name = "test-matheus-cloudfront"
   }
 }

@@ -1,7 +1,7 @@
 resource "aws_acm_certificate" "acm_cert" {
-  provider                  = aws.us_east_1
-  domain_name               = "exam.ezopscloud.tech"
-  validation_method         = "DNS"
+  provider          = aws.us_east_1
+  domain_name       = "exam.ezopscloud.tech"
+  validation_method = "DNS"
 
   lifecycle {
     create_before_destroy = true
