@@ -31,15 +31,15 @@ jobs:
     - name: Validate Terraform
       run: terraform validate
 
-    - name: Check if bucket exists in Terraform state
-      run: |
-        bucket_exists=$(terraform state list | grep aws_s3_bucket.cloudfront_bucket)
-        if [ -z "$bucket_exists" ]; then
-          echo "Bucket not found in Terraform state, skipping removal."
-        else
-          echo "Bucket found, removing from Terraform state."
-          terraform state rm aws_s3_bucket.cloudfront_bucket
-        fi
+    # - name: Check if bucket exists in Terraform state
+    #   run: |
+    #     bucket_exists=$(terraform state list | grep aws_s3_bucket.cloudfront_bucket)
+    #     if [ -z "$bucket_exists" ]; then
+    #       echo "Bucket not found in Terraform state, skipping removal."
+    #     else
+    #       echo "Bucket found, removing from Terraform state."
+    #       terraform state rm aws_s3_bucket.cloudfront_bucket
+    #     fi
 
     - name: Terraform Plan
       run: terraform plan -out=tfplan
