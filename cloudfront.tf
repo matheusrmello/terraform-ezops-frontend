@@ -82,13 +82,17 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  tags = {
-    Name = "test-matheus-cloudfront"
-  }
+
+
 
   viewer_certificate {
     acm_certificate_arn            = aws_acm_certificate.acm_cert.arn
     ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1"
+  }
+
+    tags = {
+    Name = "test-matheus-cloudfront"
   }
 }
 
