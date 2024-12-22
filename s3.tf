@@ -33,23 +33,6 @@ resource "aws_s3_bucket" "cloudfront_bucket" {
   }
 }
 
-# resource "aws_s3_object" "provision_source_files" {
-#   bucket = aws_s3_bucket.cloudfront_bucket.id
-
-#   for_each = fileset("dist/", "**/*.*")
-
-#   key          = each.value
-#   source       = "dist/${each.value}"
-#   content_type = each.value
-#   etag         = filemd5("dist/${each.value}")
-#   depends_on   = [aws_s3_bucket.cloudfront_bucket]
-
-#   provisioner "local-exec" {
-#     when    = apply
-#     command = "aws s3 sync ./dist s3://${self.bucket} --recursive"
-#   }
-# }
-
 resource "null_resource" "upload_to_s3" {
   provisioner "local-exec" {
     command = "aws s3 sync ./dist s3://test-matheus-cloudfront"
