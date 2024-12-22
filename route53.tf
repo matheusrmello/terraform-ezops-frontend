@@ -1,16 +1,12 @@
-resource "aws_route53_record" "cert_validation" {
-  provider = aws.default
-  for_each = {
-    for dvo in aws_acm_certificate.acm_cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      type   = dvo.resource_record_type
-      record = dvo.resource_record_value
-    }
-  }
+data "aws_route53_zone" "zone" {
+  name         = "exam.ezopscloud.tech."
+  private_zone = false
+}
 
-  zone_id = "Z08622851AKBHFB3GT1EP"
-  name    = each.value.name
-  type    = each.value.type
+resource "aws_route53_record" "alias_route53_record" {
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = "test-matheus"
+  type    = "CNAME"
   ttl     = 300
-  records = [each.value.record]
+  records = [aws_cloudfront_distribution.s3_distribution.domain_name]
 }
