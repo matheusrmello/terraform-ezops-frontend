@@ -35,5 +35,5 @@ jobs:
       run: terraform plan -out=tfplan
 
     - name: Terraform Apply
-      if: github.event_name == 'push' # Apenas em pushes diretos
+      if: github.event_name == 'push'
       run: terraform apply -auto-approve tfplan
