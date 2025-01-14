@@ -1,5 +1,5 @@
 data "aws_route53_zone" "zone" {
-  name         = "exam.ezopscloud.tech."
+  name         = "mrmello.com.br."
   private_zone = false
 }
 

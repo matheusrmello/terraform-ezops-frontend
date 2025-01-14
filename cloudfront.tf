@@ -30,7 +30,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_root_object = "index.html"
   wait_for_deployment = true
 
-  aliases = ["test-matheus.exam.ezopscloud.tech"]
+  aliases = ["test-matheus.mrmello.com.br"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -98,7 +98,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
 data "aws_acm_certificate" "amazon_issued" {
   provider    = aws.us_east_1
-  domain      = "exam.ezopscloud.tech"
+  domain      = "mrmello.com.br"
   types       = ["AMAZON_ISSUED"]
   statuses    = ["ISSUED"]
   most_recent = true
